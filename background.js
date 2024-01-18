@@ -4,6 +4,7 @@ chrome.alarms.create("pomodoroTimer", {
 
 chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === "pomodoroTimer") {
+        updateBadge();
         chrome.storage.local.get(["timer", "isRunning", "timeOption"], (res) => {
             if (res.isRunning) {
                 let timer = res.timer + 1
@@ -32,3 +33,16 @@ chrome.storage.local.get(["timer", "isRunning", "timeOption"], (res) => {
         isRunning: "isRunning" in res ? res.isRunning : false,
     })
 })
+
+function updateBadge(){
+    chrome.storage.local.get(["timer", "timeOption", "isRunning"], (res) => {
+        const minutes = `${res.timeOption - Math.ceil(res.timer / 60)}`.padStart(2, "0");
+    let seconds = "00";
+    if (res.timer % 60 != 0) {
+      seconds = `${60 - res.timer % 60}`.padStart(2, "0");
+    }
+    // Set the badge text to the remaining time
+    chrome.action.setBadgeText({text: `${minutes}`});
+  });
+}
+// added with assistance from Bing 1.18.23

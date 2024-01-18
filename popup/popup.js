@@ -10,9 +10,6 @@ function updateTime() {
         }
         time.textContent = `${minutes}:${seconds}`
         startTimerBtn.textContent = res.isRunning ? "Pause Timer" : "Start Timer"
-
-        // Set the badge text to the remaining time
-        chrome.action.setBadgeText({text: `${minutes}`});
     })
 }
 
